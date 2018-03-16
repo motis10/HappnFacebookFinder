@@ -8,7 +8,7 @@ Checked on Happn APK version 21.0.0
 <b>##Steps 1:</b><br />
 Open original Happn apk on your device, wait for crossing profiles, click on profile to watch:
 <br />
-<a href="https://imgbb.com/"><img src="https://image.ibb.co/kg9u7x/Capture3.png" alt="happn profile watch" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/ioBr4c/Capture3.png" alt="Happn watch profile" border="0"></a>
 <br />
 </p>
 
@@ -16,7 +16,7 @@ Open original Happn apk on your device, wait for crossing profiles, click on pro
 <b>##Step 2:</b><br />
 Open HappnFacebookFinder App apk
 <br />
-<a href="https://imgbb.com/"><img src="https://image.ibb.co/mK8Xuc/Capture1.png" alt="HappnFacebookFinder" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/mK8Xuc/Capture1.png" alt="Happn Facebook Finder" border="0"></a>
 <br />
 </p>
 
@@ -24,8 +24,7 @@ Open HappnFacebookFinder App apk
 <b>##Step 3:</b><br />
 Results page
 <br />
-<a href="https://imgbb.com/"><img src="https://image.ibb.co/cgDbLH/Capture2.png" alt="HappnFacebookFinder result" border="0"></a>
-<br />
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/htPpqH/Capture2.png" alt="Happn Facebook Finder reseults" border="0"></a><br />
 </p>
 
 
