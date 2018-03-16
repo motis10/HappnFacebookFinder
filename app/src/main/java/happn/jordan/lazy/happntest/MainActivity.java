@@ -1,6 +1,5 @@
 package happn.jordan.lazy.happntest;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.database.Cursor;
@@ -31,6 +30,13 @@ public class MainActivity extends Activity {
 
     public static final String NOT_EXIST = "NOT_EXIST";
     public static final String FACEBOOK_URL = "http://www.facebook.com/";
+    public static final String USER_TABLE = "user";
+    public static final String SERIALIZED_OBJECT_COL = "serialized_object";
+    public static final String ACHIEVEMENTS_COL = "achievements";
+    public static final String MERGE_TIMESTAMP_COL = "merge_timestamp";
+    public static final String SOCIAL_SYNCHRONIZATION_OBJ = "social_synchronization";
+    public static final String FACEBOOK_OBJ = "facebook";
+    public static final String ID_OBJ = "id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +44,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         View button = findViewById(R.id.getLastFbId);
         final WebView webView = (WebView) findViewById(R.id.facebookWebView);
-        webView.getSettings().setJavaScriptEnabled(true); // enable javascript
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -48,7 +54,6 @@ public class MainActivity extends Activity {
         });
 
         button.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
                 final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "Loading...", "");
@@ -84,7 +89,7 @@ public class MainActivity extends Activity {
                 try {
                     runShellCommand("cp -f data/data/com.ftw_and_co.happn/databases/happn.db /sdcard/");
                 } catch (Exception e) {
-                    Log.e("Error comando Root", e.getMessage());
+                    Log.e("Error root command", e.getMessage());
                 }
 
                 File dir = Environment.getExternalStorageDirectory();
@@ -94,11 +99,11 @@ public class MainActivity extends Activity {
                 long modification_date = -1L;
                 final SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(mypath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
                 if (myDataBase != null) {
-                    Cursor user = myDataBase.query("user", null, null, null, null, null, null);
+                    Cursor user = myDataBase.query(USER_TABLE, null, null, null, null, null, null);
                     if (user != null && user.getCount() > -1 && user.moveToFirst()) {
                         try {
                             while (!user.isAfterLast()) {
-                                String userJson = user.getString(user.getColumnIndex("serialized_object"));
+                                String userJson = user.getString(user.getColumnIndex(SERIALIZED_OBJECT_COL));
                                 if (userJson != null) {
                                     fullJson = new JSONObject(userJson);
                                     final long currentModificationDate = getModificationDate(fullJson);
@@ -125,14 +130,14 @@ public class MainActivity extends Activity {
     }
 
     private boolean isNotMe(JSONObject json) {
-        return !(json.has("achievements"));
+        return !(json.has(ACHIEVEMENTS_COL));
     }
 
     private long getModificationDate(JSONObject json) {
-        if (json.has("merge_timestamp")) {
+        if (json.has(MERGE_TIMESTAMP_COL)) {
             try {
-                return json.getLong("merge_timestamp");
-            } catch (JSONException e) {
+                return json.getLong(MERGE_TIMESTAMP_COL);
+            } catch (JSONException ignored) {
             }
         }
 
@@ -140,28 +145,22 @@ public class MainActivity extends Activity {
     }
 
     private String getFacebookId(JSONObject json) {
-        if (json.has("social_synchronization")) {
+        if (json.has(SOCIAL_SYNCHRONIZATION_OBJ)) {
             JSONObject social_synchronization = null;
             try {
-                social_synchronization = json.getJSONObject("social_synchronization");
-                if (social_synchronization.has("facebook")) {
-                    JSONObject facebook = social_synchronization.getJSONObject("facebook");
-                    if (facebook.has("id")) {
-                        String fbId = facebook.getString("id");
+                social_synchronization = json.getJSONObject(SOCIAL_SYNCHRONIZATION_OBJ);
+                if (social_synchronization.has(FACEBOOK_OBJ)) {
+                    JSONObject facebook = social_synchronization.getJSONObject(FACEBOOK_OBJ);
+                    if (facebook.has(ID_OBJ)) {
+                        String fbId = facebook.getString(ID_OBJ);
                         try {
                             return new BlowfishDecrypter().decrypt(fbId).trim();
-                        } catch (NoSuchPaddingException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        } catch (InvalidKeyException e) {
-                            e.printStackTrace();
-                        } catch (BadPaddingException e) {
-                            e.printStackTrace();
-                        } catch (IllegalBlockSizeException e) {
-                            e.printStackTrace();
+                        } catch (NoSuchPaddingException ignored) {
+                        } catch (NoSuchAlgorithmException ignored) {
+                        } catch (UnsupportedEncodingException ignored) {
+                        } catch (InvalidKeyException ignored) {
+                        } catch (BadPaddingException ignored) {
+                        } catch (IllegalBlockSizeException ignored) {
                         }
                     }
                 }
@@ -182,12 +181,10 @@ public class MainActivity extends Activity {
         try {
             int suProcessRetval = suProcess.waitFor();
             if (255 != suProcessRetval) {
-                // Acceso Root concedido
             } else {
-                // Acceso Root denegado
             }
         } catch (Exception ex) {
-            Log.e("Error comando Root", ex.getMessage());
+            Log.e("Error root command", ex.getMessage());
         }
     }
 }
